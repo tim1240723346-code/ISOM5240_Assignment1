@@ -7,65 +7,26 @@ from PIL import Image
 
 
 # -------------------------------
-# Load models
+# Function part
 # -------------------------------
 
-@st.cache_resource
-def load_image_captioning_model():
-    """
-    Load the image captioning model.
-    This model turns an image into a short text description.
-    """
-    return pipeline(
+# Image to text
+def img2text(image):
+    image_to_text_model = pipeline(
         "image-to-text",
         model="Salesforce/blip-image-captioning-base"
     )
 
-
-@st.cache_resource
-def load_story_generation_model():
-    """
-    Load the story generation model.
-    This model turns the image description into a short story.
-    """
-    return pipeline(
-        "text-generation",
-        model="pranavpsv/genre-story-generator-v2"
-    )
-
-
-@st.cache_resource
-def load_text_to_audio_model():
-    """
-    Load the text-to-audio model.
-    This model turns the story into speech.
-    """
-    return pipeline(
-        "text-to-audio",
-        model="Matthijs/mms-tts-eng"
-    )
-
-
-# -------------------------------
-# Function part
-# -------------------------------
-
-def img2text(image):
-    """
-    This function takes an uploaded image and generates a caption.
-    """
-    image_to_text_model = load_image_captioning_model()
-    result = image_to_text_model(image)
-    text = result[0]["generated_text"]
+    text = image_to_text_model(image)[0]["generated_text"]
     return text
 
 
+# Text to story
 def text2story(text):
-    """
-    This function takes the image caption and generates a short story.
-    The story is designed for children aged 3 to 10.
-    """
-    story_model = load_story_generation_model()
+    story_pipe = pipeline(
+        "text-generation",
+        model="pranavpsv/genre-story-generator-v2"
+    )
 
     prompt = (
         "Write a warm, positive, simple English story for kids aged 3 to 10. "
@@ -74,7 +35,7 @@ def text2story(text):
         f"The story is based on this image description: {text}"
     )
 
-    story_results = story_model(
+    story_results = story_pipe(
         prompt,
         max_new_tokens=120,
         do_sample=True,
@@ -84,10 +45,10 @@ def text2story(text):
 
     story_text = story_results[0]["generated_text"]
 
-    # Remove the prompt from the generated result if it appears
+    # Remove the prompt if it appears in the output
     story_text = story_text.replace(prompt, "").strip()
 
-    # Make sure the story is not longer than 100 words
+    # Keep the story under 100 words
     words = story_text.split()
     if len(words) > 100:
         story_text = " ".join(words[:100]) + "."
@@ -95,13 +56,16 @@ def text2story(text):
     return story_text
 
 
+# Text to audio
 def text2audio(story_text):
-    """
-    This function converts the generated story into audio.
-    """
-    audio_model = load_text_to_audio_model()
-    audio_data = audio_model(story_text)
+    audio_pipe = pipeline(
+        "text-to-audio",
+        model="Matthijs/mms-tts-eng"
+    )
+
+    audio_data = audio_pipe(story_text)
     return audio_data
+
 
 
 # -------------------------------
