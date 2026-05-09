@@ -107,8 +107,7 @@ if uploaded_file is not None:
     with st.spinner("Creating a story for kids..."):
         story = text2story(caption)
 
-    st.write("**Story:**")
-    st.write(story)
+    st.write(f"**Stroy:** {story}")
 
     # Step 3: Text to audio
     st.subheader("Step 3: Story Audio")
