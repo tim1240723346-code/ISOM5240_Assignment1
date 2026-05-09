@@ -104,7 +104,7 @@ if uploaded_file is not None:
     # Step 2: Text to story
     st.subheader("Generated a Story")
     with st.spinner("Creating a story for kids..."):
-        story = text2story(caption)
+        story = text2story(scenario)
 
     st.write(f"**Story:** {story}")
 
