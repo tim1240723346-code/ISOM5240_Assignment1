@@ -25,7 +25,7 @@ def img2text(image):
 def text2story(text):
     story_pipe = pipeline(
         "text-generation",
-        model="pranavpsv/genre-story-generator-v2"
+        model="google/flan-t5-base"
     )
 
     prompt = (
