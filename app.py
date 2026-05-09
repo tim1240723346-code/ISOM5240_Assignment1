@@ -99,7 +99,7 @@ if uploaded_file is not None:
     with st.spinner("Understanding the image..."):
         scenario = img2text(image)
 
-      st.write(f"**Scenario:** {scenario}")
+    st.write(f"**Scenario:** {scenario}")
 
     # Step 2: Text to story
     st.subheader("Generated a Story")
