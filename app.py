@@ -32,9 +32,7 @@ def text2story(text):
         "Write a warm, positive, simple English story for kids aged 3 to 10. "
         "The story should be 50 to 100 words. "
         "Use friendly language and a happy ending. "
-        f"Image description: {text}. "
-        "Write a complete story based only on this image description. "
-        "Start with a complete sentence."
+        f"The story is based on this image description: {text} "
     )
 
     story_results = story_pipe(
@@ -47,6 +45,8 @@ def text2story(text):
 
     story_text = story_results[0]["generated_text"]
 
+    story_text = story_text.replace(prompt, "").strip()
+    
     # Keep the story under 100 words
     words = story_text.split()
     if len(words) > 100:
