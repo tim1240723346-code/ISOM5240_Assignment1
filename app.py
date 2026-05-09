@@ -47,9 +47,6 @@ def text2story(text):
 
     story_text = story_results[0]["generated_text"]
 
-    # Remove the prompt if it appears in the output
-    story_text = story_text.replace(prompt, "").strip()
-
     # Keep the story under 100 words
     words = story_text.split()
     if len(words) > 100:
