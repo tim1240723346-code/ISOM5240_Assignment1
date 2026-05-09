@@ -25,14 +25,13 @@ def img2text(image):
 def text2story(text):
     story_pipe = pipeline(
         "text-generation",
-        model="google/flan-t5-base"
+        model="pranavpsv/genre-story-generator-v2"
     )
 
     prompt = (
         "Write a warm, positive, simple English story for kids aged 3 to 10. "
         "The story should be 50 to 100 words. "
         "Use friendly language and a happy ending. "
-        f"The story is based on this image description: {text}"
     )
 
     story_results = story_pipe(
