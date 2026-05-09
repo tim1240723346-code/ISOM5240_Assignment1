@@ -95,22 +95,21 @@ if uploaded_file is not None:
     st.image(image, caption="Uploaded Image", use_container_width=True)
 
     # Step 1: Image to text
-    st.subheader("Step 1: Image Caption")
+    st.subheader("Image Caption")
     with st.spinner("Understanding the image..."):
-        caption = img2text(image)
+        scenario = img2text(image)
 
-    st.write("**Image Caption:**")
-    st.write(caption)
+      st.write(f"**Scenario:** {scenario}")
 
     # Step 2: Text to story
-    st.subheader("Step 2: Generated Story")
+    st.subheader("Generated a Story")
     with st.spinner("Creating a story for kids..."):
         story = text2story(caption)
 
-    st.write(f"**Stroy:** {story}")
+    st.write(f"**Story:** {story}")
 
     # Step 3: Text to audio
-    st.subheader("Step 3: Story Audio")
+    st.subheader("Story Audio")
     with st.spinner("Generating audio..."):
         audio_data = text2audio(story)
 
